@@ -1,0 +1,9 @@
+{
+	"name": "dfbigdata112025",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "fe2134b9-eef7-4040-a68c-546c338c3c57",
+		"tenantId": "48ed4956-9159-4c01-9263-b82feb1eb34b"
+	}
+}
