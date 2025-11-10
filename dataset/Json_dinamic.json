@@ -1,0 +1,50 @@
+{
+	"name": "Json_dinamic",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "bronze"
+			},
+			"folder": {
+				"type": "string",
+				"defaultValue": "cdc"
+			},
+			"file": {
+				"type": "string",
+				"defaultValue": "cdc.json"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().file",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"cdc": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
