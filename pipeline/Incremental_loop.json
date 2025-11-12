@@ -237,7 +237,7 @@
 													{
 														"name": "cdc",
 														"value": {
-															"value": "@activity('max_cdc').output.resultSets[0].rows[0].cdc",
+															"value": "\"name\": \"cdc\",\n\"value\": {\n  \"value\": \"@{activity('max_cdc').output.resultSets[0].rows[0].cdc}\",\n  \"type\": \"Expression\"\n}",
 															"type": "Expression"
 														}
 													}
@@ -269,7 +269,7 @@
 												"parameters": {
 													"container": "bronze",
 													"folder": {
-														"value": "@{item().table}_cdc",
+														"value": "@concat(item().table, '_cdc')\n",
 														"type": "Expression"
 													},
 													"file": "empty.JSON"
@@ -283,7 +283,7 @@
 												"parameters": {
 													"container": "bronze",
 													"folder": {
-														"value": "@{item().table}_cdc",
+														"value": "@concat(item().table, '_cdc')\n",
 														"type": "Expression"
 													},
 													"file": "cdc.json"
@@ -334,9 +334,7 @@
 						"activity": "ForEach1",
 						"dependencyConditions": [
 							"Failed",
-							"Skipped",
-							"Succeeded",
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
