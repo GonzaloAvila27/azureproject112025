@@ -328,18 +328,6 @@
 			}
 		],
 		"parameters": {
-			"schema": {
-				"type": "string"
-			},
-			"table": {
-				"type": "string"
-			},
-			"cdc_colum": {
-				"type": "string"
-			},
-			"from_date": {
-				"type": "string"
-			},
 			"loop_input": {
 				"type": "string",
 				"defaultValue": [
