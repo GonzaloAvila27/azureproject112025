@@ -43,7 +43,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().schema}.@{item().table} WHERE @{item().cdc_colum} > '@{if(empty(item().from_date),activity('last_cdc').output.value[0].cdc,item().from_date)}'",
+										"value": "select * from @{item().schema}.@{item().table} WHERE @{item().cdc_col} > '@{if(empty(item().from_date),activity('last_cdc').output.value[0].cdc,item().from_date)}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -122,7 +122,7 @@
 									"parameters": {
 										"container": "bronze",
 										"folder": {
-											"value": "@{item().table}_cdc",
+											"value": "@concat(item().table, '_cdc')",
 											"type": "Expression"
 										},
 										"file": "cdc.json"
@@ -162,7 +162,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@greater(activity('azureSQLtoLake').output.dataRead,0)",
+									"value": "@greater(int(coalesce(activity('azureSQLtoLake').output.dataRead, 0)), 0)\n",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
@@ -312,7 +312,7 @@
 												{
 													"type": "Query",
 													"text": {
-														"value": "@SELECT MAX(@{item().cdc_colum}) as cdc FROM @{item().schema}.@{item().table}",
+														"value": "SELECT MAX(@{item().cdc_col}) as cdc FROM @{item().schema}.@{item().table}",
 														"type": "Expression"
 													}
 												}
