@@ -30,12 +30,19 @@ Objetivo: mover datos desde SQL → Data Lake con control de cambios basado en c
 # Componentes:
 
 🔎 Parámetro loop_input → array JSON con definición dinámica de cada tabla.
+
 🔁 ForEach1 (secuencial) → itera sobre cada tabla, garantizando ejecución ordenada.
+
 🔎 Lookup last_cdc → obtiene la fecha del último CDC registrada en cdc.json.
+
 🖨 Copy azureSQLtoLake → extrae solo filas nuevas.
+
 ✅ IfCondition Ifincrimental_data → evalúa si hubo datos nuevos.
+
 ⏲ Script max_cdc → calcula la fecha máxima del nuevo lote.
+
 🖨 Copy update_last_cdc → actualiza cdc.json con la nueva fecha.
+
 🗑 Delete Delete_empty_file → elimina archivos vacíos si no hay nuevos registros.
 
 ### 🧠 INCIDENTES Y SOLUCIONES TÉCNICAS APLICADAS
@@ -43,8 +50,11 @@ Objetivo: mover datos desde SQL → Data Lake con control de cambios basado en c
 Durante la implementación, se detectaron diversos errores de configuración, los cuales se documentan a continuación:
 
 # Nº Descripción del error	Causa raíz	Solución aplicada
+
 ❗	Error array index '0' cannot be selected from empty array	El archivo cdc.json no existía o estaba vacío, provocando que activity('last_cdc').output.value devolviera un array vacío.	Se creó un valor por defecto en caso de CDC vacío (1900-01-01) y se añadió validación con @if(or(equals(...))).
+
 ❗		BadRequest en IfCondition	Métrica usada: dataRead (a veces null).	Se reemplazó por: @greater(int(coalesce(activity('azureSQLtoLake').output.rowsCopied, 0)), 0) para robustez.
+
 ❗		Concurrency alta en ForEach provocaba colisiones	Ejecución simultánea de tablas.	Se habilitó modo Secuencial (Concurrency = 1) durante depuración.
 
 🧩 EXPRESIONES CLAVE FINALMENTE ADOPTADAS
